@@ -15,10 +15,10 @@ $(function() {
         var scroll = $(window).scrollTop();
         if (scroll < 20) {
             $(".navbar-area").removeClass("sticky");
-            $(".navbar-area img").attr("src", "assets/images/logo.svg");
+            // $(".navbar-area img").attr("src", "assets/images/logo.svg");
         } else {
             $(".navbar-area").addClass("sticky");
-            $(".navbar-area img").attr("src", "assets/images/logo-2.svg");
+            // $(".navbar-area img").attr("src", "assets/images/logo-2.svg");
         }
     });
 
@@ -91,21 +91,51 @@ $(function() {
     });
     
     
-    //===== 
+    var firebaseConfig = {
+        apiKey: "AIzaSyCMcC6qhZ8Rzhwqd7wrpeogqMAVboIQZzo",
+        authDomain: "static-electric.firebaseapp.com",
+        projectId: "static-electric",
+      };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    var db = firebase.firestore();
+    
+    // Handle Testimonial Form
+    $('#contact-form').submit(function(event) {
+        event.preventDefault();
+        const message = $(this).find("textarea[name='testimonial']").val();
+        const name = $(this).find("input[name='name']").val();
+        db.collection("testimonials").add({
+            message: message,
+            name: name
+        })
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            $('.testimonial-success-alert').removeClass('d-none');
+            setTimeout(function() {
+                $('.testimonial-success-alert').addClass('d-none');
+            }, 5000)
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+        $(this).find("textarea[name='testimonial']").val("");
+        $(this).find("input[name='name']").val("");
+        fetchTestimonials(db);
+    });
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    fetchTestimonials(db);
     
 });
+
+function fetchTestimonials(db) {
+    $('#testimonials .carousel-inner').html("");
+    db.collection("testimonials").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        $('#testimonials .carousel-inner').prepend("<div class='carousel-item bg-transparent h-100'><div class='container'><div class='row justify-content-center'><div class='col-8'><p class='text text-muted py-3'>"+doc.data().message+"</p><hr><p class='text text-muted text-left pb-1'><b>"+doc.data().name+"</b></p></div></div></div></div>");
+    });
+    $('#testimonials .carousel-inner .carousel-item').first().addClass('active');
+});
+}
