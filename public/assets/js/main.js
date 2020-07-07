@@ -126,6 +126,8 @@ $(function() {
         });
         $(this).find("textarea[name='testimonial']").val("");
         $(this).find("input[name='name']").val("");
+        $(this).find("input[name='city']").val("");
+        $(this).find("input[name='email']").val("");
         fetchTestimonials(db);
     });
     
