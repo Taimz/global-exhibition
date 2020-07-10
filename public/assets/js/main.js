@@ -92,9 +92,9 @@ $(function() {
     
     
     var firebaseConfig = {
-        apiKey: "AIzaSyCMcC6qhZ8Rzhwqd7wrpeogqMAVboIQZzo",
-        authDomain: "static-electric.firebaseapp.com",
-        projectId: "static-electric",
+        apiKey: "AIzaSyDVeFGN8Ve9EGucHoHnXFLg7lMZ4Mif_cY",
+        authDomain: "global-projects-d22ac.firebaseapp.com",
+        projectId: "global-projects-d22ac",
       };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
